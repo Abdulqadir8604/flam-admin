@@ -2,31 +2,23 @@
 
 import * as z from "zod"
 import axios from "axios"
-import { useState } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "react-hot-toast"
-import { Trash } from "lucide-react"
-import { Category, Color, Image, Product, Size } from "@prisma/client"
-import { useParams, useRouter } from "next/navigation"
+import {useState} from "react"
+import {zodResolver} from "@hookform/resolvers/zod"
+import {useForm} from "react-hook-form"
+import {toast} from "react-hot-toast"
+import {Trash} from "lucide-react"
+import {Category, Color, Image, Product, Size} from "@prisma/client"
+import {useParams, useRouter} from "next/navigation"
 
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form"
-import { Separator } from "@/components/ui/separator"
-import { Heading } from "@/components/ui/heading"
-import { AlertModal } from "@/components/modals/alert-modal"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {Input} from "@/components/ui/input"
+import {Button} from "@/components/ui/button"
+import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage,} from "@/components/ui/form"
+import {Separator} from "@/components/ui/separator"
+import {Heading} from "@/components/ui/heading"
+import {AlertModal} from "@/components/modals/alert-modal"
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import ImageUpload from "@/components/ui/image-upload"
-import { Checkbox } from "@/components/ui/checkbox"
+import {Checkbox} from "@/components/ui/checkbox"
 
 const formSchema = z.object({
     name: z.string().min(1),
@@ -246,7 +238,13 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                                         </FormControl>
                                         <SelectContent>
                                             {colors.map((color) => (
-                                                <SelectItem key={color.id} value={color.id}>{color.name}</SelectItem>
+                                                <SelectItem key={color.id} value={color.id}>
+                                                    <div key={color.id} className={"flex items-center gap-5"}>
+                                                        <div className="w-4 h-4 rounded-full bg-gray-200"
+                                                             style={{backgroundColor: color.value}} />
+                                                        {color.name}
+                                                    </div>
+                                                </SelectItem>
                                             ))}
                                         </SelectContent>
                                     </Select>
