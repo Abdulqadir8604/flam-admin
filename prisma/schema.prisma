@@ -133,4 +133,7 @@ model Image {
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   url       String // URL of the image
   createdAt DateTime @default(now())
-  updatedAt DateTime 
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
+}
