@@ -32,4 +32,4 @@ export async function POST(
         console.log('[STORES_POST]', error);
         return new NextResponse("Internal error", {status: 500});
     }
-}
+};

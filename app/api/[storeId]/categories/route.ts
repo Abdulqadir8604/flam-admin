@@ -9,6 +9,7 @@ export async function POST(
 ) {
     try {
         const {userId} = auth();
+
         const body = await req.json();
 
         const {name, billboardId} = body;
@@ -22,11 +23,11 @@ export async function POST(
         }
 
         if (!billboardId) {
-            return new NextResponse("Billboard is required", {status: 400});
+            return new NextResponse("Billboard ID is required", {status: 400});
         }
 
         if (!params.storeId) {
-            return new NextResponse("Store ID is required", {status: 400});
+            return new NextResponse("Store id is required", {status: 400});
         }
 
         const storeByUserId = await prismadb.store.findFirst({
@@ -37,7 +38,7 @@ export async function POST(
         });
 
         if (!storeByUserId) {
-            return new NextResponse("Unauthorized", {status: 403});
+            return new NextResponse("Unauthorized", {status: 405});
         }
 
         const category = await prismadb.category.create({
@@ -53,7 +54,7 @@ export async function POST(
         console.log('[CATEGORIES_POST]', error);
         return new NextResponse("Internal error", {status: 500});
     }
-}
+};
 
 export async function GET(
     req: Request,
@@ -61,12 +62,12 @@ export async function GET(
 ) {
     try {
         if (!params.storeId) {
-            return new NextResponse("Store ID is required", {status: 400});
+            return new NextResponse("Store id is required", {status: 400});
         }
 
         const categories = await prismadb.category.findMany({
             where: {
-                storeId: params.storeId,
+                storeId: params.storeId
             }
         });
 
@@ -75,4 +76,4 @@ export async function GET(
         console.log('[CATEGORIES_GET]', error);
         return new NextResponse("Internal error", {status: 500});
     }
-}
+};

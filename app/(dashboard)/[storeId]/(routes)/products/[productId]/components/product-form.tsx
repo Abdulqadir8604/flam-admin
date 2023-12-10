@@ -22,7 +22,7 @@ import {Checkbox} from "@/components/ui/checkbox"
 
 const formSchema = z.object({
     name: z.string().min(1),
-    images: z.object({ url: z.string() }).array(),
+    images: z.object({url: z.string()}).array(),
     price: z.coerce.number().min(1),
     categoryId: z.string().min(1),
     colorId: z.string().min(1),
@@ -45,8 +45,8 @@ interface ProductFormProps {
 export const ProductForm: React.FC<ProductFormProps> = ({
                                                             initialData,
                                                             categories,
-                                                            colors,
-                                                            sizes
+                                                            sizes,
+                                                            colors
                                                         }) => {
     const params = useParams();
     const router = useRouter();
@@ -86,9 +86,9 @@ export const ProductForm: React.FC<ProductFormProps> = ({
             } else {
                 await axios.post(`/api/${params.storeId}/products`, data);
             }
+            router.refresh();
             router.push(`/${params.storeId}/products`);
             toast.success(toastMessage);
-            router.refresh();
         } catch (error: any) {
             toast.error('Something went wrong.');
         } finally {
@@ -100,9 +100,9 @@ export const ProductForm: React.FC<ProductFormProps> = ({
         try {
             setLoading(true);
             await axios.delete(`/api/${params.storeId}/products/${params.productId}`);
+            router.refresh();
             router.push(`/${params.storeId}/products`);
             toast.success('Product deleted.');
-            router.refresh();
         } catch (error: any) {
             toast.error('Something went wrong.');
         } finally {
@@ -138,14 +138,14 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                     <FormField
                         control={form.control}
                         name="images"
-                        render={({ field }) => (
+                        render={({field}) => (
                             <FormItem>
                                 <FormLabel>Images</FormLabel>
                                 <FormControl>
                                     <ImageUpload
                                         value={field.value.map((image) => image.url)}
                                         disabled={loading}
-                                        onChange={(url) => field.onChange([...field.value, { url }])}
+                                        onChange={(url) => field.onChange([...field.value, {url}])}
                                         onRemove={(url) => field.onChange([...field.value.filter((current) => current.url !== url)])}
                                     />
                                 </FormControl>
@@ -157,7 +157,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                         <FormField
                             control={form.control}
                             name="name"
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <FormItem>
                                     <FormLabel>Name</FormLabel>
                                     <FormControl>
@@ -170,7 +170,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                         <FormField
                             control={form.control}
                             name="price"
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <FormItem>
                                     <FormLabel>Price</FormLabel>
                                     <FormControl>
@@ -183,18 +183,21 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                         <FormField
                             control={form.control}
                             name="categoryId"
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <FormItem>
                                     <FormLabel>Category</FormLabel>
-                                    <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}
+                                            defaultValue={field.value}>
                                         <FormControl>
                                             <SelectTrigger>
-                                                <SelectValue defaultValue={field.value} placeholder="Select a category" />
+                                                <SelectValue defaultValue={field.value}
+                                                             placeholder="Select a category" />
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
                                             {categories.map((category) => (
-                                                <SelectItem key={category.id} value={category.id}>{category.name}</SelectItem>
+                                                <SelectItem key={category.id}
+                                                            value={category.id}>{category.name}</SelectItem>
                                             ))}
                                         </SelectContent>
                                     </Select>
@@ -205,10 +208,11 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                         <FormField
                             control={form.control}
                             name="sizeId"
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <FormItem>
                                     <FormLabel>Size</FormLabel>
-                                    <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}
+                                            defaultValue={field.value}>
                                         <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue defaultValue={field.value} placeholder="Select a size" />
@@ -227,10 +231,11 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                         <FormField
                             control={form.control}
                             name="colorId"
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <FormItem>
                                     <FormLabel>Color</FormLabel>
-                                    <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}
+                                            defaultValue={field.value}>
                                         <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue defaultValue={field.value} placeholder="Select a color" />
@@ -238,13 +243,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                                         </FormControl>
                                         <SelectContent>
                                             {colors.map((color) => (
-                                                <SelectItem key={color.id} value={color.id}>
-                                                    <div key={color.id} className={"flex items-center gap-5"}>
-                                                        <div className="w-4 h-4 rounded-full bg-gray-200"
-                                                             style={{backgroundColor: color.value}} />
-                                                        {color.name}
-                                                    </div>
-                                                </SelectItem>
+                                                <SelectItem key={color.id} value={color.id}>{color.name}</SelectItem>
                                             ))}
                                         </SelectContent>
                                     </Select>
@@ -255,8 +254,9 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                         <FormField
                             control={form.control}
                             name="isFeatured"
-                            render={({ field }) => (
-                                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                            render={({field}) => (
+                                <FormItem
+                                    className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                                     <FormControl>
                                         <Checkbox
                                             checked={field.value}
@@ -278,8 +278,9 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                         <FormField
                             control={form.control}
                             name="isArchived"
-                            render={({ field }) => (
-                                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                            render={({field}) => (
+                                <FormItem
+                                    className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                                     <FormControl>
                                         <Checkbox
                                             checked={field.value}

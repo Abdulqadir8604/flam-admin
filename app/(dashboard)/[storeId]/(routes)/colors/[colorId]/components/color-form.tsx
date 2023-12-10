@@ -18,9 +18,9 @@ import {Heading} from "@/components/ui/heading"
 import {AlertModal} from "@/components/modals/alert-modal"
 
 const formSchema = z.object({
-    name: z.string().min(1),
-    value: z.string().min(4).regex(/^#/, {
-        message: 'String must be a valid HEX color.'
+    name: z.string().min(2),
+    value: z.string().min(4).max(9).regex(/^#/, {
+        message: 'String must be a valid hex code'
     }),
 });
 
@@ -59,9 +59,9 @@ export const ColorForm: React.FC<ColorFormProps> = ({
             } else {
                 await axios.post(`/api/${params.storeId}/colors`, data);
             }
+            router.refresh();
             router.push(`/${params.storeId}/colors`);
             toast.success(toastMessage);
-            router.refresh();
         } catch (error: any) {
             toast.error('Something went wrong.');
         } finally {
@@ -73,9 +73,9 @@ export const ColorForm: React.FC<ColorFormProps> = ({
         try {
             setLoading(true);
             await axios.delete(`/api/${params.storeId}/colors/${params.colorId}`);
-            router.push(`/${params.storeId}/colors`);
-            toast.success('color deleted.');
             router.refresh();
+            router.push(`/${params.storeId}/colors`);
+            toast.success('Color deleted.');
         } catch (error: any) {
             toast.error('Make sure you removed all products using this color first.');
         } finally {
@@ -129,14 +129,12 @@ export const ColorForm: React.FC<ColorFormProps> = ({
                                 <FormItem>
                                     <FormLabel>Value</FormLabel>
                                     <FormControl>
-
-                                        <div className={"flex items-center gap-x-4"}>
+                                        <div className="flex items-center gap-x-4">
                                             <Input disabled={loading} placeholder="Color value" {...field} />
                                             <div
-                                                className={"border p-4 rounded-full"}
+                                                className="border p-4 rounded-full"
                                                 style={{backgroundColor: field.value}}
-                                            >
-                                            </div>
+                                            />
                                         </div>
                                     </FormControl>
                                     <FormMessage />

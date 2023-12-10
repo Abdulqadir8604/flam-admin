@@ -11,13 +11,13 @@ import {ApiList} from "@/components/ui/api-list";
 
 import {ColorColumn, columns} from "./columns";
 
-interface ColorsClientProps {
+interface ColorClientProps {
     data: ColorColumn[];
 }
 
-export const ColorsClient: React.FC<ColorsClientProps> = ({
-                                                              data
-                                                          }) => {
+export const ColorClient: React.FC<ColorClientProps> = ({
+                                                            data
+                                                        }) => {
     const params = useParams();
     const router = useRouter();
 

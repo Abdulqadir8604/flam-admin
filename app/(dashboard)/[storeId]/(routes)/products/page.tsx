@@ -1,14 +1,14 @@
 import {format} from "date-fns";
 
 import prismadb from "@/lib/prismadb";
-
-import {ProductColumn} from "./components/columns"
-import {ProductClient} from "./components/client"
 import {formatter} from "@/lib/utils";
 
-const ProductPage = async ({
-                                  params
-                              }: {
+import {ProductsClient} from "./components/client";
+import {ProductColumn} from "./components/columns";
+
+const ProductsPage = async ({
+                                params
+                            }: {
     params: { storeId: string }
 }) => {
     const products = await prismadb.product.findMany({
@@ -32,7 +32,7 @@ const ProductPage = async ({
         isArchived: item.isArchived,
         price: formatter.format(item.price.toNumber()),
         category: item.category.name,
-        size: item.size.value,
+        size: item.size.name,
         color: item.color.value,
         createdAt: format(item.createdAt, 'MMMM do, yyyy'),
     }));
@@ -40,10 +40,10 @@ const ProductPage = async ({
     return (
         <div className="flex-col">
             <div className="flex-1 space-y-4 p-8 pt-6">
-                <ProductClient data={formattedProducts} />
+                <ProductsClient data={formattedProducts} />
             </div>
         </div>
     );
 };
 
-export default ProductPage;
+export default ProductsPage;

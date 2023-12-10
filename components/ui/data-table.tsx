@@ -1,6 +1,6 @@
 "use client"
-import {Button} from "@/components/ui/button"
-import {Input} from "@/components/ui/input"
+
+import {useState} from "react"
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -12,23 +12,21 @@ import {
 } from "@tanstack/react-table"
 
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
-import React from "react";
+import {Button} from "@/components/ui/button"
+import {Input} from "@/components/ui/input"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
-    data: TData[]
-    searchKey?: string
+    data: TData[],
+    searchKey: string;
 }
 
 export function DataTable<TData, TValue>({
                                              columns,
                                              data,
-                                             searchKey = "search",
+                                             searchKey,
                                          }: DataTableProps<TData, TValue>) {
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-        []
-    )
-
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const table = useReactTable({
         data,
         columns,
@@ -36,17 +34,16 @@ export function DataTable<TData, TValue>({
         getPaginationRowModel: getPaginationRowModel(),
         onColumnFiltersChange: setColumnFilters,
         getFilteredRowModel: getFilteredRowModel(),
-
         state: {
             columnFilters,
         }
-    })
+    });
 
     return (
         <div>
             <div className="flex items-center py-4">
                 <Input
-                    placeholder="Search..."
+                    placeholder="Search"
                     value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn(searchKey)?.setFilterValue(event.target.value)

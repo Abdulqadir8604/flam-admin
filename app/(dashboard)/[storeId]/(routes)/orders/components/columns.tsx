@@ -2,10 +2,8 @@
 
 import {ColumnDef} from "@tanstack/react-table"
 
-import {CellAction} from "./cell-action"
-
 export type OrderColumn = {
-    id: string
+    id: string;
     phone: string;
     address: string;
     isPaid: boolean;
@@ -24,20 +22,15 @@ export const columns: ColumnDef<OrderColumn>[] = [
         header: "Phone",
     },
     {
-      accessorKey: "address",
+        accessorKey: "address",
         header: "Address",
     },
     {
         accessorKey: "totalPrice",
-        header: "Total Price",
+        header: "Total price",
     },
     {
         accessorKey: "isPaid",
         header: "Paid",
-        cell: ({row}) => <span className="text-green-500">{row.original.isPaid ? "Yes" : "No"}</span>
-    },
-    {
-        accessorKey: "createdAt",
-        header: "Date",
     },
 ];

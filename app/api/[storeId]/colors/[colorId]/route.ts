@@ -9,7 +9,7 @@ export async function GET(
 ) {
     try {
         if (!params.colorId) {
-            return new NextResponse("Color ID is required", {status: 400});
+            return new NextResponse("Color id is required", {status: 400});
         }
 
         const color = await prismadb.color.findUnique({
@@ -37,13 +37,13 @@ export async function DELETE(
         }
 
         if (!params.colorId) {
-            return new NextResponse("Color ID is required", {status: 400});
+            return new NextResponse("Color id is required", {status: 400});
         }
 
         const storeByUserId = await prismadb.store.findFirst({
             where: {
                 id: params.storeId,
-                userId,
+                userId
             }
         });
 
@@ -53,7 +53,7 @@ export async function DELETE(
 
         const color = await prismadb.color.delete({
             where: {
-                id: params.colorId,
+                id: params.colorId
             }
         });
 
@@ -88,14 +88,15 @@ export async function PATCH(
             return new NextResponse("Value is required", {status: 400});
         }
 
+
         if (!params.colorId) {
-            return new NextResponse("Color ID id is required", {status: 400});
+            return new NextResponse("Color id is required", {status: 400});
         }
 
         const storeByUserId = await prismadb.store.findFirst({
             where: {
                 id: params.storeId,
-                userId,
+                userId
             }
         });
 
@@ -105,7 +106,7 @@ export async function PATCH(
 
         const color = await prismadb.color.update({
             where: {
-                id: params.colorId,
+                id: params.colorId
             },
             data: {
                 name,

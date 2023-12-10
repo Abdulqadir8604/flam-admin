@@ -1,7 +1,7 @@
 import {NextResponse} from 'next/server';
-import {auth} from '@clerk/nextjs';
 
 import prismadb from '@/lib/prismadb';
+import {auth} from '@clerk/nextjs';
 
 export async function POST(
     req: Request,
@@ -9,6 +9,7 @@ export async function POST(
 ) {
     try {
         const {userId} = auth();
+
         const body = await req.json();
 
         const {name, value} = body;
@@ -26,25 +27,25 @@ export async function POST(
         }
 
         if (!params.storeId) {
-            return new NextResponse("Store ID is required", {status: 400});
+            return new NextResponse("Store id is required", {status: 400});
         }
 
         const storeByUserId = await prismadb.store.findFirst({
             where: {
                 id: params.storeId,
-                userId,
+                userId
             }
         });
 
         if (!storeByUserId) {
-            return new NextResponse("Unauthorized", {status: 403});
+            return new NextResponse("Unauthorized", {status: 405});
         }
 
         const color = await prismadb.color.create({
             data: {
                 name,
                 value,
-                storeId: params.storeId,
+                storeId: params.storeId
             }
         });
 
@@ -53,7 +54,7 @@ export async function POST(
         console.log('[COLORS_POST]', error);
         return new NextResponse("Internal error", {status: 500});
     }
-}
+};
 
 export async function GET(
     req: Request,
@@ -61,12 +62,12 @@ export async function GET(
 ) {
     try {
         if (!params.storeId) {
-            return new NextResponse("Store ID is required", {status: 400});
+            return new NextResponse("Store id is required", {status: 400});
         }
 
         const colors = await prismadb.color.findMany({
             where: {
-                storeId: params.storeId,
+                storeId: params.storeId
             }
         });
 
@@ -75,4 +76,4 @@ export async function GET(
         console.log('[COLORS_GET]', error);
         return new NextResponse("Internal error", {status: 500});
     }
-}
+};

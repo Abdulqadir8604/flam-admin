@@ -1,7 +1,7 @@
 import {NextResponse} from "next/server";
-import {auth} from "@clerk/nextjs";
 
 import prismadb from "@/lib/prismadb";
+import {auth} from "@clerk/nextjs";
 
 export async function GET(
     req: Request,
@@ -37,13 +37,13 @@ export async function DELETE(
         }
 
         if (!params.sizeId) {
-            return new NextResponse("Size ID is required", {status: 400});
+            return new NextResponse("Size id is required", {status: 400});
         }
 
         const storeByUserId = await prismadb.store.findFirst({
             where: {
                 id: params.storeId,
-                userId,
+                userId
             }
         });
 
@@ -53,7 +53,7 @@ export async function DELETE(
 
         const size = await prismadb.size.delete({
             where: {
-                id: params.sizeId,
+                id: params.sizeId
             }
         });
 
@@ -88,14 +88,15 @@ export async function PATCH(
             return new NextResponse("Value is required", {status: 400});
         }
 
+
         if (!params.sizeId) {
-            return new NextResponse("Size ID id is required", {status: 400});
+            return new NextResponse("Size id is required", {status: 400});
         }
 
         const storeByUserId = await prismadb.store.findFirst({
             where: {
                 id: params.storeId,
-                userId,
+                userId
             }
         });
 
@@ -105,7 +106,7 @@ export async function PATCH(
 
         const size = await prismadb.size.update({
             where: {
-                id: params.sizeId,
+                id: params.sizeId
             },
             data: {
                 name,
