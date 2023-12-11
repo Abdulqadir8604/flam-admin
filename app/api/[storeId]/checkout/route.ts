@@ -57,8 +57,7 @@ export async function POST(
                         connect: {
                             id: productId
                         }
-                    },
-                    quantity: 1
+                    }
                 }))
             }
         }
